@@ -1,5 +1,8 @@
 package com.libms.libms.books;
 
+import com.libms.libms.patrons.Patron;
+import com.libms.libms.patrons.PatronRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ public class BookService {
     public BookService(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
+
+
 
     public List<Book> findAllBooks() {
         return bookRepository.findAll();
@@ -44,4 +49,5 @@ public class BookService {
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
+
 }

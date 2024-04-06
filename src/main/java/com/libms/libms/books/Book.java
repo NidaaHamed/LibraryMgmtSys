@@ -1,6 +1,14 @@
 package com.libms.libms.books;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.libms.libms.patrons.Patron;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -20,6 +28,11 @@ public class Book {
     private int publicationYear;
     @Column(name = "ISBN")
     private String isbn;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "borrowedBooks")
+    @JsonIgnoreProperties("borrowedBooks")
+    private Set<Patron> borrowedBy = new HashSet<>();
 
     // Constructors, getters, setters, and other methods
 
@@ -79,5 +92,13 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+    @JsonProperty("borrowedBy")
+    public Set<Patron> getBorrowedBy() {
+        return borrowedBy;
+    }
+
+    public void setBorrowedBy(Set<Patron> borrowedBy) {
+        this.borrowedBy = borrowedBy;
     }
 }

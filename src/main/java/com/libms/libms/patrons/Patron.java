@@ -1,6 +1,12 @@
 package com.libms.libms.patrons;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.libms.libms.books.Book;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "patrons")
@@ -15,6 +21,15 @@ public class Patron {
     private String phone;
     @Column(name = "email")
     private String email;
+
+    @JsonManagedReference
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "book_patron",
+            joinColumns = @JoinColumn(name = "patron_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
+    private Set<Book> borrowedBooks = new HashSet<>();
 
     public Patron() {
 
@@ -55,5 +70,12 @@ public class Patron {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Set<Book> getBorrowedBooks() {
+        return borrowedBooks;
+    }
+
+    public void setBorrowedBooks(Set<Book> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 }
